@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="styles/theme.css">
+    <script type="text/javascript" src="js/plugin.js"></script>
+</head>
+
+<body>
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Message')">Message</button>
+        <button class="tablinks" onclick="openTab(event, 'Settings')">Settings</button>
+        <button class="tablinks" onclick="openTab(event, 'TnC')">Terms and Conditions</button>
+    </div>
+
+    <div id="Message" class="tabcontent">
+        <div id="message" class="feedback"></div>
+        <div id="myForm" class="myForm">
+            <input type="checkbox" id="chkTncAccept" name="chkTncAccept" class="myCheckboxClass">
+            <label for="chkTncAccept">I confirm that I have read and agree to the terms and conditions</label><br>
+            <button id="btnScan" class="modernButton">Scan for missing items</button>
+        </div>
+    </div>
+
+    <div id="Settings" class="tabcontent">
+        <input type="checkbox" id="chkAutoScanOnLibChange" name="chkAutoScanOnLibChange" class="myCheckboxClass">
+        <label for="chkAutoScanOnLibChange">Automatically scan after changing libraries.</label><br>
+        <button id="btnSettingsSave" class="modernButton">Save</button>
+        <button id="btnSettingsDefault" class="modernButtonOrange">Load Defaults</button>
+    </div>
+
+    <div id="TnC" class="tabcontent">
+        <div id="tnc" class="tnc"></div>
+    </div>
+</body>
+
+</html>

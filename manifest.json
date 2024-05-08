@@ -1,0 +1,15 @@
+{
+    "id": "5f8221bb-9e9c-4027-a050-366e860a5684",
+    "version": "1.0.0",
+    "platform": "all",
+    "arch": "all",
+    "name": "Missing files",
+    "logo": "/logo.png",
+    "keywords": [],
+    "devTools": false,
+    "main": {
+        "url": "index.html",
+        "width": 1024,
+        "height": 600
+    }
+}
