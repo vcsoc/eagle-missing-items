@@ -3,13 +3,13 @@
     "version": "1.0.0",
     "platform": "all",
     "arch": "all",
-    "name": "Missing files",
+    "name": "Missing Item Tagger",
     "logo": "/logo.png",
     "keywords": [],
     "devTools": false,
     "main": {
         "url": "index.html",
-        "width": 1024,
+        "width": 800,
         "height": 600
     }
 }

@@ -2,6 +2,9 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const settingspath = os.homedir() + '/missingfile.json';
+const showdownPath = path.join(__dirname, 'showdown.min.js');
+const md = require(showdownPath);
+const eventNewTab = new Event('openTab');
 
 eagle.onPluginCreate((plugin) => {
 	console.log('MissingFiles_>>_eagle.onPluginCreate');
@@ -27,16 +30,19 @@ eagle.onPluginCreate((plugin) => {
 	All questions and/or suggestions can be sent to vceng@outlook.com.<br>
 	${(new Date()).toLocaleString()} ---------------------------------- <br>
 	`, `Yellow`, false);
+
+	//openTab(event, 'Inspector');
 });
 
 eagle.onPluginShow(() => {
 	console.log('MissingFiles_>>_eagle.onPluginShow');
-	//console.log.clear();
+	//console.log.clear();+
+
 });
 
 eagle.onPluginRun(async () => {
 	console.log('MissingFiles_>>_eagle.onPluginRun');
-
+	console.log(showdownPath);
 	await gettnc();
 	await LoadSettings();
 	//await processMissingFiles();
@@ -199,20 +205,62 @@ async function myAsyncFunction() {
 
 async function gettnc() {
 
-	// Define the path to the file
-	const filePath = path.join(__dirname, 'tnc.txt');
-	console.log(filePath);
+	// // Define the path to the file
+	// const filePath = path.join(__dirname, 'tnc.txt');
+	// console.log(filePath);
 
-	// Read the file
-	fs.readFile(filePath, 'utf8', function (err, data) {
-		if (err) {
-			console.error("Error reading file:", err);
-			return;
-		}
+	// // Read the file
+	// fs.readFile(filePath, 'utf8', function (err, data) {
+	// 	if (err) {
+	// 		console.error("Error reading file:", err);
+	// 		return;
+	// 	}
 
-		// Update the div with id "message" with the file content
-		document.querySelector('#tnc').innerHTML = `${data}`;
-	});
+	// 	// Update the div with id "message" with the file content
+	// 	document.querySelector('#tnc').innerHTML = `${data}`;
+	// });
+
+	// Function to fetch Markdown content from file
+	function fetchMarkdownFile(filePath) {
+		return fetch(filePath)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Failed to fetch Markdown file');
+				}
+				return response.text();
+			})
+			.catch(error => {
+				console.error('Error fetching Markdown file:', error);
+			});
+	}
+
+	// Function to convert Markdown to HTML
+	function convertMarkdownToHTML(markdownContent) {
+		// You'll need to use a library like marked.js or showdown.js for Markdown to HTML conversion
+		// Example with marked.js:
+		// return marked(markdownContent);
+		var converter = new md.Converter();
+		return converter.makeHtml(markdownContent);
+
+		// Placeholder return statement (replace with actual conversion logic)
+		return `<p>${markdownContent}</p>`;
+	}
+
+	// Function to load Markdown content into the "message" div
+	function loadMarkdownIntoDiv(markdownHTML) {
+		const tncDiv = document.getElementById('tnc');
+		tncDiv.innerHTML = markdownHTML;
+	}
+
+	// File path to your Markdown file
+	const markdownFilePath = path.join(__dirname, 'tnc.md'); //'path/to/your/markdown/file.md';
+
+	// Fetch Markdown content from file, convert to HTML, and load into the "message" div
+	fetchMarkdownFile(markdownFilePath)
+		.then(markdownContent => {
+			const markdownHTML = convertMarkdownToHTML(markdownContent);
+			loadMarkdownIntoDiv(markdownHTML);
+		});
 
 }
 
@@ -242,6 +290,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById('btnSettingsDefault').addEventListener('click', async function () {
 		await LoadSettings();
 	});
+
+
 });
 
 //---------------------------------------------------------------
