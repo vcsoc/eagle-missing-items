@@ -1,5 +1,10 @@
 # Terms and Conditions
 
+```
+Plugin  : Missing Item Tagger
+Version : beta
+```
+
 ## Acceptance of Terms
 
 By using the "Missing Item Tagger" plugin (the "Plugin"), you are agreeing to be bound by the following terms and conditions ("Terms of Service").
