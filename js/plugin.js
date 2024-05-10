@@ -7,78 +7,35 @@ const md = require(showdownPath);
 const eventNewTab = new Event('openTab');
 
 eagle.onPluginCreate((plugin) => {
-	console.log('MissingFiles_>>_eagle.onPluginCreate');
-	//eagle.log.debug(plugin);
-	// document.querySelector('#message').innerHTML = `
-	// <ul>
-	// 	<li>id: ${plugin.manifest.id}</li>
-	// 	<li>version: ${plugin.manifest.version}</li>
-	// 	<li>name: ${plugin.manifest.name}</li>
-	// 	<li>logo: ${plugin.manifest.logo}</li>
-	// 	<li>path: ${plugin.path}</li>
-	// </ul>
-	// `;
-	// console.log(plugin.manifest.name);
-	// console.log(plugin.manifest.version);
-	// console.log(plugin.manifest.logo);
-	// console.log(plugin.path);
-
-	//document.querySelector('#message').innerHTML = 'Looking for missing files...';
 	progress(`
 	Welcome to the Missing Files extension.<br>
 	<b>This is a beta version.</b><br>
 	All questions and/or suggestions can be sent to vceng@outlook.com.<br>
 	${(new Date()).toLocaleString()} ---------------------------------- <br>
 	`, `Yellow`, false);
-
-	//openTab(event, 'Inspector');
 });
 
 eagle.onPluginShow(() => {
-	console.log('MissingFiles_>>_eagle.onPluginShow');
-	//console.log.clear();+
-
 });
 
 eagle.onPluginRun(async () => {
-	console.log('MissingFiles_>>_eagle.onPluginRun');
-	console.log(showdownPath);
 	await gettnc();
 	await LoadSettings();
-	//await processMissingFiles();
 	setTab();
 });
 
 eagle.onPluginHide(() => {
-	eagle.log.debug('MissingFiles_>>_eagle.onPluginHide');
 });
 
 eagle.onPluginBeforeExit((event) => {
-	eagle.log.debug('MissingFiles_>>_eagle.onPluginBeforeExit');
 });
 
 eagle.onLibraryChanged(async (libraryPath) => {
-	console.log(`Resource library switch detected, new resource library path: ${libraryPath}`);
-
 	if (document.getElementById('chkAutoScanOnLibChange').checked) {
 		await processMissingFiles();
 	} else {
 		progress(` Consider scanning for missing items in <b><i>${path.basename(libraryPath)}</i></b>.`, 'Orange', true);
 	}
-
-	// let result = await eagle.dialog.showMessageBox({
-	// 	title: "Library Changed",
-	// 	message: "You have changed the library in eagle. Would you like to rerun the check for missing items?",
-	// 	detail: "Have a coffee break!",
-	// 	buttons: ["OK", "Cancel"],
-	// 	type: "info"
-	// });
-
-	// if (result.response === 0) {
-	// 	progress(' ----------------------------------', undefined, true);
-	// 	progress(' Looking for missing files, please be patient.', 'Red');
-	// 	await processMissingFiles();
-	// }
 });
 
 //---------------------------------------------------------------
@@ -111,22 +68,17 @@ function openTab(evt, tabName) {
 //---------------------------------------------------------------
 
 async function progress(message, color = 'white', timestamp = false) {
-
 	if (eagle.app.isDarkColors()) {
 		document.querySelector('#message').style.color = 'white';
 		document.querySelector('#message').style.font = "12px arial, serif";
 	}
-
 	let html = "";
 	if (document.querySelector('#message').style.color != color) {
 		html = `<font color="${color}">${message}</font>`;
 	} else {
 		html = `${message}`;
 	}
-
 	timestamp ? html = `${(new Date()).toLocaleString()} - ` + html : "";
-	console.log(html);
-
 	document.querySelector('#message').innerHTML += `${html}<br>`;
 	await scrollToBottom('message');
 }
@@ -137,7 +89,6 @@ async function getItemsRecursively(folderId) {
 	let items = await eagle.item.get({
 		folders: [folderId]
 	});
-
 	// Recurse into subfolders (if any)
 	let children = folder.children;
 	//console.log(children);
@@ -148,7 +99,6 @@ async function getItemsRecursively(folderId) {
 			items.push(...await getItemsRecursively(child.id));
 		}
 	}
-
 	return items;
 }
 
@@ -158,8 +108,6 @@ async function processMissingFiles(allItems = false) {
 	let idxtotal = 0;
 	let idx = 0;
 	cnt = 0;
-
-	//progress(' ----------------------------------', undefined, true);
 	progress(' Looking for missing files, please be patient.', 'LightGreen', true);
 
 	try {
@@ -167,7 +115,6 @@ async function processMissingFiles(allItems = false) {
 		let items = [];
 		if (folder != null && !allItems) {
 			items = await getItemsRecursively(folder.id);
-			console.log(`	>> ${items.length} items found recursively.`);
 			progress(`Looking for missing files in \"${folder.name}\" folder(s).`);
 		} else {
 			items = await eagle.item.getAll();
@@ -189,8 +136,6 @@ async function processMissingFiles(allItems = false) {
 							progress(`   Tagging item ${idx} :: ${path.basename(filePath)} (${i.id})`);
 							i.tags.push('missingfile');
 							i.save();
-							//await eagle.item.remove(i.id);
-							console.log(`   File does not exist at ${filePath} (${i.id})`);
 						} else {
 							//console.log('File exists at ', filePath);
 						}
@@ -209,28 +154,10 @@ async function processMissingFiles(allItems = false) {
 //---------------------------------------------------------------
 
 async function myAsyncFunction() {
-	// Your async function goes here.
-	//console.log('Async function triggered!');
 	await processMissingFiles();
 }
 
 async function gettnc() {
-
-	// // Define the path to the file
-	// const filePath = path.join(__dirname, 'tnc.txt');
-	// console.log(filePath);
-
-	// // Read the file
-	// fs.readFile(filePath, 'utf8', function (err, data) {
-	// 	if (err) {
-	// 		console.error("Error reading file:", err);
-	// 		return;
-	// 	}
-
-	// 	// Update the div with id "message" with the file content
-	// 	document.querySelector('#tnc').innerHTML = `${data}`;
-	// });
-
 	// Function to fetch Markdown content from file
 	function fetchMarkdownFile(filePath) {
 		return fetch(filePath)
@@ -247,14 +174,8 @@ async function gettnc() {
 
 	// Function to convert Markdown to HTML
 	function convertMarkdownToHTML(markdownContent) {
-		// You'll need to use a library like marked.js or showdown.js for Markdown to HTML conversion
-		// Example with marked.js:
-		// return marked(markdownContent);
 		var converter = new md.Converter();
 		return converter.makeHtml(markdownContent);
-
-		// Placeholder return statement (replace with actual conversion logic)
-		return `<p>${markdownContent}</p>`;
 	}
 
 	// Function to load Markdown content into the "message" div
@@ -288,8 +209,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (document.getElementById('chkTncAccept').checked) {
 			await myAsyncFunction();
 		} else {
-			console.log('TnC checkbox is not checked.');
-			//progress(' ----------------------------------', undefined, true);
 			progress(' You need to read and agree to the terms and conditions before you can continue.', 'Red', true);
 		}
 	});
@@ -325,7 +244,6 @@ async function SaveSettings() {
 		tncAccept: document.getElementById('chkTncAccept').checked
 	};
 	fs.writeFileSync(settingspath, JSON.stringify(data));
-	console.log(`Saved settings to ${settingspath}`);
 }
 
 async function LoadSettings() {
@@ -345,9 +263,6 @@ async function LoadSettings() {
 	let settings = JSON.parse(rawdata);
 	document.getElementById('chkAutoScanOnLibChange').checked = settings.autoScanOnLibChange;
 	document.getElementById('chkTncAccept').checked = settings.tncAccept;
-
-	console.log(`Loaded default settings.`);
-
 }
 
 //---------------------------------------------------------------
