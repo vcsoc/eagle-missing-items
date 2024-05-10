@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const settingspath = os.homedir() + '/missingfile.json';
-const showdownPath = path.join(__dirname, 'showdown.min.js');
+const showdownPath = path.join(__dirname, 'js', 'showdown.min.js');
 const md = require(showdownPath);
 const eventNewTab = new Event('openTab');
 
@@ -46,7 +46,7 @@ eagle.onPluginRun(async () => {
 	await gettnc();
 	await LoadSettings();
 	//await processMissingFiles();
-
+	setTab();
 });
 
 eagle.onPluginHide(() => {
@@ -82,6 +82,17 @@ eagle.onLibraryChanged(async (libraryPath) => {
 });
 
 //---------------------------------------------------------------
+
+function setTab() {
+	// Create a new click event
+	var newClickEvent = new Event('click');
+
+	// Select the element you want to trigger the click event on
+	var element = document.getElementById('tabInspector');
+
+	// Dispatch the click event on the selected element
+	element.dispatchEvent(newClickEvent);
+}
 
 function openTab(evt, tabName) {
 	var i, tabcontent, tablinks;
