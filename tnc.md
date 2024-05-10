@@ -32,3 +32,7 @@ We may terminate your access to all or any part of the Plugin at any time, with 
 ## Acceptance
 
 By using the Plugin, you acknowledge that you have read these terms and conditions, understand them, and agree to be bound by them.
+
+## Contact
+
+For any questions/suggestions, you can drop me an email to vceng@outlook.com
